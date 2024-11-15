@@ -79,6 +79,9 @@ def orthogonalize_llama2_weights(model, direction: Float[Tensor, "d_model"]):
         block.mlp.down_proj.weight.data = get_orthogonalized_matrix(block.mlp.down_proj.weight.data.T, direction).T
 
 def act_add_llama2_weights(model, direction: Float[Tensor, "d_model"], coeff, layer):
+    '''
+    替换bias，加的是目标方向信息
+    '''
     dtype = model.model.layers[layer-1].mlp.down_proj.weight.dtype
     device = model.model.layers[layer-1].mlp.down_proj.weight.device
 

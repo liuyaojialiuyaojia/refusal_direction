@@ -26,6 +26,9 @@ def format_instruction_gemma_chat(
     system: str=None,
     include_trailing_whitespace: bool=True,
 ):
+    '''
+    套模版
+    '''
     if system is not None:
         raise ValueError("System prompts are not supported for Gemma models.")
     else:
@@ -46,6 +49,9 @@ def tokenize_instructions_gemma_chat(
     system: str=None,
     include_trailing_whitespace=True,
 ):
+    '''
+    编码成嵌入
+    '''
     if outputs is not None:
         prompts = [
             format_instruction_gemma_chat(instruction=instruction, output=output, system=system, include_trailing_whitespace=include_trailing_whitespace)

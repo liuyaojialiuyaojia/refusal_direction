@@ -16,13 +16,17 @@ from pipeline.submodules.evaluate_jailbreak import evaluate_jailbreak
 from pipeline.submodules.evaluate_loss import evaluate_loss
 
 def parse_arguments():
-    """Parse model path argument from command line."""
+    """
+    测试模型路径
+    Parse model path argument from command line.
+    """
     parser = argparse.ArgumentParser(description="Parse model path argument.")
     parser.add_argument('--model_path', type=str, required=True, help='Path to the model')
     return parser.parse_args()
 
 def load_and_sample_datasets(cfg):
     """
+    加载找向量和测试的ful、less样本集对
     Load datasets and sample them based on the configuration.
 
     Returns:
@@ -37,6 +41,7 @@ def load_and_sample_datasets(cfg):
 
 def filter_data(cfg, model_base, harmful_train, harmless_train, harmful_val, harmless_val):
     """
+    过滤数据集
     Filter datasets based on refusal scores.
 
     Returns:
@@ -60,7 +65,10 @@ def filter_data(cfg, model_base, harmful_train, harmless_train, harmful_val, har
     return harmful_train, harmless_train, harmful_val, harmless_val
 
 def generate_and_save_candidate_directions(cfg, model_base, harmful_train, harmless_train):
-    """Generate and save candidate directions."""
+    """
+    候选方向向量
+    Generate and save candidate directions.
+    """
     if not os.path.exists(os.path.join(cfg.artifact_path(), 'generate_directions')):
         os.makedirs(os.path.join(cfg.artifact_path(), 'generate_directions'))
 
@@ -95,7 +103,10 @@ def select_and_save_direction(cfg, model_base, harmful_val, harmless_val, candid
     return pos, layer, direction
 
 def generate_and_save_completions_for_dataset(cfg, model_base, fwd_pre_hooks, fwd_hooks, intervention_label, dataset_name, dataset=None):
-    """Generate and save completions for a dataset."""
+    """
+    最优方向向量
+    Generate and save completions for a dataset.
+    """
     if not os.path.exists(os.path.join(cfg.artifact_path(), 'completions')):
         os.makedirs(os.path.join(cfg.artifact_path(), 'completions'))
 
@@ -108,7 +119,10 @@ def generate_and_save_completions_for_dataset(cfg, model_base, fwd_pre_hooks, fw
         json.dump(completions, f, indent=4)
 
 def evaluate_completions_and_save_results_for_dataset(cfg, intervention_label, dataset_name, eval_methodologies):
-    """Evaluate completions and save results for a dataset."""
+    """
+    评估
+    Evaluate completions and save results for a dataset.
+    """
     with open(os.path.join(cfg.artifact_path(), f'completions/{dataset_name}_{intervention_label}_completions.json'), 'r') as f:
         completions = json.load(f)
 
@@ -137,7 +151,6 @@ def run_pipeline(model_path):
     """Run the full pipeline."""
     model_alias = os.path.basename(model_path)
     cfg = Config(model_alias=model_alias, model_path=model_path)
-
     model_base = construct_model_base(cfg.model_path)
 
     # Load and sample datasets

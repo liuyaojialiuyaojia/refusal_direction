@@ -33,7 +33,7 @@ def refusal_score(
 def get_refusal_scores(model, instructions, tokenize_instructions_fn, refusal_toks, fwd_pre_hooks=[], fwd_hooks=[], batch_size=32):
     refusal_score_fn = functools.partial(refusal_score, refusal_toks=refusal_toks)
 
-    refusal_scores = torch.zeros(len(instructions), device=model.device)
+    refusal_scores = torch.zeros(len(instructions), device=model.device) # 一维
 
     for i in range(0, len(instructions), batch_size):
         tokenized_instructions = tokenize_instructions_fn(instructions=instructions[i:i+batch_size])

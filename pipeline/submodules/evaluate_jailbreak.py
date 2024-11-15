@@ -81,7 +81,7 @@ class LlamaGuard2Classifier:
     MODEL = "together_ai/Meta-Llama/llamaguard-2-8B"
 
     def __init__(self, api_key: str):
-        self._tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-Guard-2-8B")
+        self._tokenizer = AutoTokenizer.from_pretrained("/home/lzc/MyData/models/Meta-Llama-Guard-2-8B-AWQ")
         self._api_key = api_key
 
     def _build_classifier_input(self, prompt: str, response: str) -> list[dict[str, str]]:
@@ -127,8 +127,8 @@ def llamaguard2_judge_fn(prompts: List[str], responses: List[str]) -> List[int]:
 
     classifier = LlamaGuard2Classifier(os.environ["TOGETHER_API_KEY"])
 
-    batch_size = 20  # Adjust this value based on the API's rate limits
-    delay = 1  # Delay in seconds between batches
+    batch_size = 1  # Adjust this value based on the API's rate limits
+    delay = 2  # Delay in seconds between batches
 
     classifications = []
     for i in range(0, len(prompts), batch_size):
